@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Wekesa Mutekhele — IT Professional</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1208;
+  --paper: #f5f0e8;
+  --cream: #ede7d9;
+  --gold: #b8860b;
+  --gold-light: #d4a017;
+  --rust: #8b4513;
+  --muted: #7a6e5e;
+  --border: rgba(26,18,8,0.12);
+  --ff-display: 'Cormorant Garamond', Georgia, serif;
+  --ff-sans: 'Syne', sans-serif;
+  --ff-mono: 'JetBrains Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--ff-sans); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 1rem 3rem; background: rgba(245,240,232,0.93); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+.nav-logo { font-family: var(--ff-display); font-size: 1.3rem; font-weight: 600; color: var(--ink); text-decoration: none; }
+.nav-logo span { color: var(--gold); font-style: italic; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-family: var(--ff-mono); font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color .2s; }
+.nav-links a:hover { color: var(--ink); }
+.nav-cta { background: var(--ink); color: var(--paper); font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.55rem 1.4rem; text-decoration: none; transition: background .2s; }
+.nav-cta:hover { background: var(--gold); }
+
+/* HERO */
+#hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 64px; border-bottom: 1px solid var(--border); }
+.hero-left { padding: 5rem 3rem 5rem 4rem; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); }
+.hero-eyebrow { font-family: var(--ff-mono); font-size: 11px; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp .7s .1s forwards; }
+.hero-name { font-family: var(--ff-display); font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 300; line-height: 1.05; margin-bottom: 1.8rem; opacity: 0; animation: fadeUp .7s .25s forwards; }
+.hero-name strong { font-weight: 600; display: block; }
+.hero-name em { font-style: italic; color: var(--gold); }
+.hero-bio { font-size: 1.05rem; color: var(--muted); line-height: 1.9; max-width: 480px; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp .7s .4s forwards; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp .7s .55s forwards; }
+.badge { font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--border); color: var(--muted); background: var(--cream); }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp .7s .7s forwards; }
+.btn-dark { background: var(--ink); color: var(--paper); padding: .85rem 2rem; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background .2s, transform .15s; display: inline-block; }
+.btn-dark:hover { background: var(--gold); transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--ink); padding: .85rem 2rem; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--border); transition: border-color .2s, transform .15s; display: inline-block; }
+.btn-ghost:hover { border-color: var(--ink); transform: translateY(-1px); }
+.hero-right { background: var(--cream); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 4rem 3rem; }
+.hero-photo-frame { width: 280px; height: 340px; border: 2px solid var(--border); background: var(--paper); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: border-color .2s; opacity: 0; animation: fadeIn .8s .5s forwards; }
+.hero-photo-frame:hover { border-color: var(--gold); }
+.hero-photo-frame img { width: 100%; height: 100%; object-fit: cover; display: none; }
+.hero-photo-frame.has-photo img { display: block; }
+.hero-photo-frame.has-photo .upload-hint { display: none; }
+.upload-hint { text-align: center; padding: 2rem; }
+.upload-hint svg { width: 40px; height: 40px; opacity: .3; margin: 0 auto 1rem; display: block; }
+.upload-hint p { font-family: var(--ff-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; line-height: 1.6; }
+.photo-edit-btn { position: absolute; bottom: 10px; right: 10px; background: var(--ink); color: var(--paper); font-family: var(--ff-mono); font-size: 10px; padding: 5px 10px; letter-spacing: 0.08em; cursor: pointer; border: none; opacity: 0; transition: opacity .2s; }
+.hero-photo-frame:hover .photo-edit-btn { opacity: 1; }
+.hero-quote { margin-top: 2rem; text-align: center; font-family: var(--ff-display); font-style: italic; font-size: 1.1rem; color: var(--muted); max-width: 260px; line-height: 1.6; opacity: 0; animation: fadeIn .8s .8s forwards; }
+.hero-location { margin-top: 1rem; font-family: var(--ff-mono); font-size: 10px; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; opacity: 0; animation: fadeIn .8s 1s forwards; }
+
+/* SECTIONS */
+section { border-bottom: 1px solid var(--border); }
+.section-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 4rem; }
+.section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem; }
+.section-num { font-family: var(--ff-mono); font-size: 11px; color: var(--gold); letter-spacing: 0.15em; }
+.section-title { font-family: var(--ff-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.1; }
+
+/* ABOUT */
+.about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: start; }
+.about-body { font-size: 1.05rem; color: var(--muted); line-height: 1.95; }
+.about-body p { margin-bottom: 1.2rem; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+.stat-box { background: var(--cream); padding: 1.5rem; }
+.stat-num { font-family: var(--ff-display); font-size: 2.8rem; font-weight: 600; color: var(--gold); line-height: 1; margin-bottom: .3rem; }
+.stat-lbl { font-family: var(--ff-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* SKILLS */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); }
+.skill-card { background: var(--paper); padding: 1.8rem; transition: background .2s; }
+.skill-card:hover { background: var(--cream); }
+.skill-card-title { font-family: var(--ff-mono); font-size: 10px; color: var(--rust); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1rem; }
+.skill-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+.pill { font-family: var(--ff-mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); background: var(--cream); padding: 4px 12px; letter-spacing: 0.05em; transition: color .2s, border-color .2s; }
+.pill:hover { color: var(--ink); border-color: var(--gold); }
+
+/* EXPERIENCE */
+.exp-timeline { display: flex; flex-direction: column; gap: 2px; }
+.exp-card { display: grid; grid-template-columns: 160px 1fr; gap: 2rem; background: var(--cream); padding: 2rem; border-left: 3px solid transparent; transition: border-color .2s; }
+.exp-card:hover { border-left-color: var(--gold); }
+.exp-year { font-family: var(--ff-mono); font-size: 11px; color: var(--gold); letter-spacing: .08em; }
+.exp-org { font-family: var(--ff-mono); font-size: 11px; color: var(--muted); margin-top: .3rem; line-height: 1.5; }
+.exp-role { font-family: var(--ff-display); font-size: 1.4rem; font-weight: 400; margin-bottom: .6rem; }
+.exp-desc { color: var(--muted); font-size: .95rem; line-height: 1.85; }
+
+/* EDUCATION */
+.edu-card { display: grid; grid-template-columns: 1fr auto; gap: 2rem; background: var(--cream); padding: 2.5rem; align-items: start; border-left: 3px solid var(--gold); }
+.edu-degree { font-family: var(--ff-display); font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 300; margin-bottom: .5rem; }
+.edu-school { font-family: var(--ff-mono); font-size: 12px; color: var(--muted); margin-bottom: 1rem; }
+.edu-desc { color: var(--muted); font-size: .95rem; line-height: 1.8; }
+.edu-badge { background: var(--gold); color: var(--paper); font-family: var(--ff-mono); font-size: 10px; padding: 6px 16px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; }
+
+/* GALLERY */
+#gallery { background: var(--cream); }
+.gallery-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 3px; min-height: 180px; }
+.gallery-item { position: relative; aspect-ratio: 1; background: var(--paper); overflow: hidden; cursor: pointer; border: 1px solid var(--border); }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.gallery-item:hover img { transform: scale(1.06); }
+.del-btn { position: absolute; top: 6px; right: 6px; background: rgba(26,18,8,.8); color: var(--paper); border: none; width: 26px; height: 26px; font-size: 14px; cursor: pointer; display: none; align-items: center; justify-content: center; border-radius: 2px; }
+.gallery-item:hover .del-btn { display: flex; }
+.gallery-empty { grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem; text-align: center; border: 2px dashed var(--border); }
+.gallery-empty p { font-family: var(--ff-mono); font-size: 12px; color: var(--muted); margin-top: 1rem; line-height: 1.7; }
+
+/* DOCUMENTS */
+.docs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.doc-card { display: flex; align-items: center; gap: 1rem; background: var(--cream); padding: 1.2rem 1.5rem; border: 1px solid var(--border); transition: border-color .2s; }
+.doc-card:hover { border-color: var(--gold); }
+.doc-icon { width: 42px; height: 50px; background: var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--ff-mono); font-size: 9px; color: var(--paper); letter-spacing: .05em; text-transform: uppercase; flex-shrink: 0; }
+.doc-info { flex: 1; min-width: 0; }
+.doc-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+.doc-size { font-family: var(--ff-mono); font-size: 10px; color: var(--muted); }
+.doc-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.doc-btn { font-family: var(--ff-mono); font-size: 10px; padding: 4px 10px; border: 1px solid var(--border); background: var(--paper); cursor: pointer; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; transition: background .2s, color .2s; text-decoration: none; display: inline-block; }
+.doc-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.doc-btn.danger:hover { background: #a93226; color: var(--paper); border-color: #a93226; }
+.docs-empty { display: flex; flex-direction: column; align-items: center; padding: 3rem; border: 2px dashed var(--border); text-align: center; margin-bottom: 1.5rem; }
+.docs-empty p { font-family: var(--ff-mono); font-size: 12px; color: var(--muted); margin-top: 1rem; line-height: 1.7; }
+.upload-area { border: 2px dashed var(--border); padding: 2rem; text-align: center; cursor: pointer; background: var(--paper); transition: border-color .2s, background .2s; }
+.upload-area:hover, .upload-area.dragover { border-color: var(--gold); background: var(--cream); }
+.upload-area p { font-family: var(--ff-mono); font-size: 11px; color: var(--muted); margin-top: .5rem; line-height: 1.7; }
+
+/* CONTACT */
+#contact { background: var(--ink); color: var(--paper); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.contact-heading { font-family: var(--ff-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.05; margin-bottom: 1.5rem; }
+.contact-heading em { font-style: italic; color: var(--gold-light); }
+.contact-sub { color: rgba(245,240,232,.5); line-height: 1.9; margin-bottom: 2rem; }
+.contact-links { display: flex; flex-direction: column; gap: 2px; }
+.contact-link { display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 1.4rem; background: rgba(245,240,232,.05); text-decoration: none; color: var(--paper); font-size: 14px; transition: background .2s; border-left: 2px solid transparent; }
+.contact-link:hover { background: rgba(245,240,232,.1); border-left-color: var(--gold-light); }
+.contact-link-meta { font-family: var(--ff-mono); font-size: 10px; color: rgba(245,240,232,.35); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 2px; }
+.contact-arrow { color: var(--gold-light); }
+
+/* FOOTER */
+footer { background: var(--ink); padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(245,240,232,.1); }
+footer p { font-family: var(--ff-mono); font-size: 10px; color: rgba(245,240,232,.3); letter-spacing: .08em; }
+
+/* LIGHTBOX */
+#lightbox { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(26,18,8,.93); align-items: center; justify-content: center; }
+#lightbox.active { display: flex; }
+#lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
+#lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--paper); font-size: 2rem; cursor: pointer; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+.reveal { opacity:0; transform:translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  #hero { grid-template-columns: 1fr; }
+  .hero-left { padding: 3rem 1.5rem; border-right: none; border-bottom: 1px solid var(--border); }
+  .hero-right { padding: 2.5rem 1.5rem; }
+  .section-inner { padding: 3rem 1.5rem; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .exp-card { grid-template-columns: 1fr; gap: .5rem; }
+  .edu-card { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: .5rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">JWM<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#documents">Documents</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">IT Professional &amp; Developer — Kakamega, Kenya</div>
+    <h1 class="hero-name">
+      John Wekesa<br>
+      <strong>Mutekhele</strong><br>
+      <em>BSc. Math &amp; IT</em>
+    </h1>
+    <p class="hero-bio">Final-year Mathematics with IT student at MMUST. I build databases, web applications, and network systems — combining mathematical precision with practical technology solutions across Western Kenya and beyond.</p>
+    <div class="hero-badges">
+      <span class="badge">Python</span><span class="badge">Java</span>
+      <span class="badge">MySQL</span><span class="badge">Networking</span>
+      <span class="badge">Cybersecurity</span><span class="badge">Web Dev</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-dark">Get in touch</a>
+      <a href="#documents" class="btn-ghost">Download CV</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photo-frame" id="heroFrame" onclick="document.getElementById('heroInput').click()">
+      <img id="heroPhoto" src="" alt="John Wekesa Mutekhele">
+      <div class="upload-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+        <p>Click to upload<br>your profile photo</p>
+      </div>
+      <button class="photo-edit-btn" onclick="event.stopPropagation();document.getElementById('heroInput').click()">Change photo</button>
+    </div>
+    <input type="file" id="heroInput" accept="image/*" style="display:none" onchange="loadHero(this)">
+    <p class="hero-quote">"Turning mathematical thinking into working technology."</p>
+    <p class="hero-location">Kakamega, Kenya · Graduating 2026</p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-header reveal"><span class="section-num">01</span><h2 class="section-title">About me</h2></div>
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <p>I'm a final-year BSc Mathematics with Information Technology student at Masinde Muliro University of Science and Technology (MMUST), Kakamega — graduating in 2026. My programme blends pure and applied mathematics with hands-on computing: algorithms, databases, networking, software engineering, and statistical analysis.</p>
+        <p>My real-world experience includes an ICT attachment at Sigalagala National Polytechnic, where I managed technical support and IT infrastructure, and a community educator role at Kitale Aid NGO, where I brought digital literacy to underserved communities across Western Kenya.</p>
+        <p>I'm currently exploring remote freelance opportunities and full-time IT roles, with a keen interest in database systems, web development, and cybersecurity.</p>
+      </div>
+      <div class="stats-grid reveal">
+        <div class="stat-box"><div class="stat-num">2+</div><div class="stat-lbl">Years experience</div></div>
+        <div class="stat-box"><div class="stat-num">6+</div><div class="stat-lbl">Technologies</div></div>
+        <div class="stat-box"><div class="stat-num">2026</div><div class="stat-lbl">Graduating</div></div>
+        <div class="stat-box"><div class="stat-num">KE</div><div class="stat-lbl">Kakamega, Kenya</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-header reveal"><span class="section-num">02</span><h2 class="section-title">Skills &amp; tools</h2></div>
+    <div class="skills-grid reveal">
+      <div class="skill-card">
+        <div class="skill-card-title">Languages</div>
+        <div class="skill-pills"><span class="pill">Python</span><span class="pill">Java</span><span class="pill">SQL</span><span class="pill">HTML</span><span class="pill">CSS</span><span class="pill">JavaScript</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Databases &amp; Data</div>
+        <div class="skill-pills"><span class="pill">MySQL</span><span class="pill">Database Design</span><span class="pill">IBM SPSS</span><span class="pill">Excel</span><span class="pill">Data Analysis</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Networking &amp; Systems</div>
+        <div class="skill-pills"><span class="pill">Network Admin</span><span class="pill">IT Support</span><span class="pill">Cybersecurity</span><span class="pill">Linux</span><span class="pill">VPN</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Tools &amp; Other</div>
+        <div class="skill-pills"><span class="pill">LaTeX</span><span class="pill">Git</span><span class="pill">GitHub Pages</span><span class="pill">OOP</span><span class="pill">Technical Writing</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-header reveal"><span class="section-num">03</span><h2 class="section-title">Experience</h2></div>
+    <div class="exp-timeline">
+      <div class="exp-card reveal">
+        <div><div class="exp-year">2023 – 2024</div><div class="exp-org">Sigalagala National Polytechnic<br>Kakamega, Kenya</div></div>
+        <div>
+          <div class="exp-role">ICT Volunteer / Attachment</div>
+          <p class="exp-desc">Provided hands-on technical support and assisted with ICT operations at the polytechnic. Managed hardware and software troubleshooting, supported network administration, and helped maintain IT infrastructure — gaining practical exposure to institutional-level IT environments.</p>
+        </div>
+      </div>
+      <div class="exp-card reveal">
+        <div><div class="exp-year">2022 – 2023</div><div class="exp-org">Kitale Aid NGO<br>Kitale, Kenya</div></div>
+        <div>
+          <div class="exp-role">Community Educator — ICT</div>
+          <p class="exp-desc">Designed and delivered digital literacy training to community members. Facilitated practical workshops covering computer basics, internet safety, and productivity tools — making technology accessible to first-time users in underserved communities across Western Kenya.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <div class="section-header reveal"><span class="section-num">04</span><h2 class="section-title">Education</h2></div>
+    <div class="edu-card reveal">
+      <div>
+        <div class="edu-degree">BSc Mathematics with Information Technology</div>
+        <div class="edu-school">Masinde Muliro University of Science &amp; Technology (MMUST) · Kakamega, Kenya</div>
+        <p class="edu-desc">A rigorous programme combining pure and applied mathematics with practical computing — covering algorithms, data structures, database systems, networking, software engineering, and statistical analysis. Strong emphasis on mathematical reasoning applied to real-world technology problems.</p>
+      </div>
+      <div class="edu-badge">Graduating 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="section-header reveal"><span class="section-num">05</span><h2 class="section-title">Photo gallery</h2></div>
+    <div class="gallery-toolbar reveal">
+      <p style="font-family:var(--ff-mono);font-size:11px;color:var(--muted);"><span id="photoCount">0</span> photos</p>
+      <label class="btn-dark" style="cursor:pointer;">
+        + Add photos
+        <input type="file" id="galleryInput" accept="image/*" multiple style="display:none" onchange="addPhotos(this)">
+      </label>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-empty" id="galleryEmpty">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <p>Click "Add photos" to upload your pictures.<br>Events, projects, work — anything you want to showcase.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCUMENTS -->
+<section id="documents">
+  <div class="section-inner">
+    <div class="section-header reveal"><span class="section-num">06</span><h2 class="section-title">Documents</h2></div>
+    <p class="reveal" style="color:var(--muted);margin-bottom:1.5rem;">Upload your CV, academic transcripts, certificates, or any professional documents. Visitors can download them directly.</p>
+    <div class="docs-grid" id="docsGrid">
+      <div class="docs-empty" id="docsEmpty">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <p>No documents yet.<br>Upload your CV, certificates, or transcripts below.</p>
+      </div>
+    </div>
+    <div class="upload-area reveal" id="dropZone"
+      ondragover="event.preventDefault();this.classList.add('dragover')"
+      ondragleave="this.classList.remove('dragover')"
+      ondrop="handleDrop(event)"
+      onclick="document.getElementById('docInput').click()">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="opacity:.35;margin:0 auto;display:block;">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      <p>Click to upload or drag &amp; drop files here<br>PDF, DOC, DOCX, images — any file type accepted</p>
+      <input type="file" id="docInput" multiple style="display:none" onchange="addDocs(this)">
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="reveal">
+        <h2 class="contact-heading">Let's<br><em>work</em><br>together</h2>
+        <p class="contact-sub">Open to freelance projects, remote IT roles, and collaboration. Whether you need a database built, a web tool developed, or technical support — reach out and let's talk.</p>
+        <a href="mailto:your.email@gmail.com" class="btn-dark" style="background:var(--gold);color:var(--ink);">Send an email</a>
+      </div>
+      <div class="contact-links reveal">
+        <a href="mailto:your.email@gmail.com" class="contact-link">
+          <div><div class="contact-link-meta">Email</div>your.email@gmail.com</div>
+          <span class="contact-arrow">→</span>
+        </a>
+        <a href="https://github.com/yourusername" class="contact-link" target="_blank">
+          <div><div class="contact-link-meta">GitHub</div>github.com/yourusername</div>
+          <span class="contact-arrow">→</span>
+        </a>
+        <a href="https://linkedin.com/in/yourusername" class="contact-link" target="_blank">
+          <div><div class="contact-link-meta">LinkedIn</div>linkedin.com/in/yourusername</div>
+          <span class="contact-arrow">→</span>
+        </a>
+        <div class="contact-link">
+          <div><div class="contact-link-meta">Location</div>Kakamega, Kenya</div>
+          <span class="contact-arrow">📍</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 John Wekesa Mutekhele</p>
+  <p>Built with HTML · Hosted on GitHub Pages</p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLB()">
+  <button id="lb-close" onclick="closeLB()">×</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Hero photo
+function loadHero(input) {
+  const file = input.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = e => { document.getElementById('heroPhoto').src = e.target.result; document.getElementById('heroFrame').classList.add('has-photo'); };
+  r.readAsDataURL(file);
+}
+
+// Gallery
+let photos = [];
+function addPhotos(input) {
+  Array.from(input.files).forEach(file => {
+    const r = new FileReader();
+    r.onload = e => { photos.push({id:'p'+Date.now()+Math.random(), src:e.target.result, name:file.name}); renderPhotos(); };
+    r.readAsDataURL(file);
+  });
+  input.value = '';
+}
+function renderPhotos() {
+  const grid = document.getElementById('galleryGrid');
+  const empty = document.getElementById('galleryEmpty');
+  document.getElementById('photoCount').textContent = photos.length;
+  if(!photos.length) { empty.style.display='flex'; return; }
+  empty.style.display = 'none';
+  const existing = new Set(Array.from(grid.querySelectorAll('.gallery-item')).map(e=>e.dataset.id));
+  photos.forEach(p => {
+    if(existing.has(p.id)) return;
+    const div = document.createElement('div'); div.className='gallery-item'; div.dataset.id=p.id;
+    div.innerHTML = `<img src="${p.src}" alt="${p.name}" onclick="openLB('${p.src}')"><button class="del-btn" onclick="delPhoto('${p.id}')">×</button>`;
+    grid.insertBefore(div, empty);
+  });
+}
+function delPhoto(id) {
+  photos = photos.filter(p=>p.id!==id);
+  document.querySelector(`.gallery-item[data-id="${id}"]`)?.remove();
+  document.getElementById('photoCount').textContent = photos.length;
+  if(!photos.length) document.getElementById('galleryEmpty').style.display='flex';
+}
+
+// Lightbox
+function openLB(src) { document.getElementById('lb-img').src=src; document.getElementById('lightbox').classList.add('active'); }
+function closeLB() { document.getElementById('lightbox').classList.remove('active'); }
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLB(); });
+
+// Documents
+let docs = [];
+function addDocs(input) { processFiles(Array.from(input.files)); input.value=''; }
+function handleDrop(e) { e.preventDefault(); document.getElementById('dropZone').classList.remove('dragover'); processFiles(Array.from(e.dataTransfer.files)); }
+function processFiles(files) {
+  files.forEach(file => {
+    const id = 'd'+Date.now()+Math.random();
+    const url = URL.createObjectURL(file);
+    const ext = file.name.split('.').pop().toUpperCase().slice(0,4);
+    const size = fmtSize(file.size);
+    docs.push({id, name:file.name, ext, size, url}); renderDocs();
+  });
+}
+function fmtSize(b) { if(b<1024) return b+' B'; if(b<1048576) return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
+function renderDocs() {
+  const grid = document.getElementById('docsGrid');
+  const empty = document.getElementById('docsEmpty');
+  if(!docs.length) { empty.style.display='flex'; return; }
+  empty.style.display='none';
+  const existing = new Set(Array.from(grid.querySelectorAll('.doc-card')).map(e=>e.dataset.id));
+  docs.forEach(d => {
+    if(existing.has(d.id)) return;
+    const div = document.createElement('div'); div.className='doc-card'; div.dataset.id=d.id;
+    div.innerHTML = `
+      <div class="doc-icon">${d.ext}</div>
+      <div class="doc-info"><div class="doc-name" title="${d.name}">${d.name}</div><div class="doc-size">${d.size}</div></div>
+      <div class="doc-actions">
+        <a href="${d.url}" download="${d.name}" class="doc-btn">Save</a>
+        <button class="doc-btn danger" onclick="delDoc('${d.id}')">Del</button>
+      </div>`;
+    grid.insertBefore(div, empty);
+  });
+}
+function delDoc(id) {
+  docs = docs.filter(d=>d.id!==id);
+  document.querySelector(`.doc-card[data-id="${id}"]`)?.remove();
+  if(!docs.length) document.getElementById('docsEmpty').style.display='flex';
+}
+</script>
+</body>
+</html>
